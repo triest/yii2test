@@ -2,78 +2,69 @@
 
 namespace app\models;
 
+use Yii;
 use yii\base\Model;
+use yii\base\Security;
+use yii\base\CSecurityManager;
 
 class SignupForm extends Model
 {
-    public $name;
+    public $username;
     public $email;
     public $password;
+    public $fio;
+    public $phone;
+    public $password_repeat;
+    public $verifyCode;
 
     public function rules()
     {
         return [
-            [['name', 'email', 'password'], 'required'],
-            [['name'], 'string'],
+            [['username', 'email', 'password'], 'required'],
+            ['password_repeat', 'required'],
+            ['password_repeat', 'compare', 'compareAttribute' => 'password', 'message' => "Passwords don't match"],
+            [['username'], 'string'],
             [['email'], 'email'],
-            [['email'], 'unique', 'targetClass' => 'app\models\User', 'targetAttribute' => 'email']
+            [['email'], 'unique', 'targetClass' => 'app\models\User', 'targetAttribute' => 'email'],
+            [['username'], 'unique', 'targetClass' => 'app\models\User', 'targetAttribute' => 'username'],
         ];
     }
 
-    public function signUp()
+    /**
+     * @return array customized attribute labels
+     */
+    public function attributeLabels()
+    {
+        return [
+            'verifyCode' => 'Verification Code',
+        ];
+    }
+
+
+    public function signup()
     {
         if ($this->validate()) {
             $user = new User();
             $user->attributes = $this->attributes;
-            return $user->create();
+            $hash = Yii::$app->getSecurity()->generatePasswordHash($user->password);
+            $user->password = $hash;
+         //   $user->emailToken = Yii::$app->security->generateRandomString(32);
+            // $this->endConfurmEmail($user->mail, $user->emailToken);
+
+            $user->create();
+            return $user;
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
+    public function sendConfurmEmail($email, $token)
     {
-        return $this->name;
+
+
+        Yii::$app->mailer->compose(['html' => '@app/mail/html'], ['token' => $token])
+            ->setFrom('sakura-testmail@sakura-city.info')
+            ->setTo($email)
+            ->setSubject('Please confurm you email')
+            ->send();
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param mixed $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
 }

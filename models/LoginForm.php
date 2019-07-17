@@ -4,6 +4,14 @@ namespace app\models;
 
 use Yii;
 use yii\base\Model;
+use app\models\Tag;
+use app\models\Comment;
+use app\models\CommentForm;
+use app\models\City;
+use app\models\Reviews;
+use Response;
+use yii\base\View\render;
+use yii\httpclient\Client;
 
 /**
  * LoginForm is the model behind the login form.
@@ -13,10 +21,9 @@ use yii\base\Model;
  */
 class LoginForm extends Model
 {
-    private $username;
-    private $password;
+    public $username;
+    public $password;
     public $rememberMe = true;
-
     private $_user = false;
 
 
@@ -28,6 +35,7 @@ class LoginForm extends Model
         return [
             // email and password are both required
             [['username', 'password'], 'required'],
+            //[['email'], 'email'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
@@ -46,7 +54,6 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-
             if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, 'Incorrect email or password.');
             }
@@ -76,55 +83,6 @@ class LoginForm extends Model
         if ($this->_user === false) {
             $this->_user = User::findByUsername($this->username);
         }
-
         return $this->_user;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param mixed $username
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isRememberMe()
-    {
-        return $this->rememberMe;
-    }
-
-    /**
-     * @param bool $rememberMe
-     */
-    public function setRememberMe($rememberMe)
-    {
-        $this->rememberMe = $rememberMe;
     }
 }

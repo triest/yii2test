@@ -35,8 +35,6 @@ class UserController extends Controller
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
             if ($user = $model->signup()) {
-                $this->sentEmailConfirm($user);
-
                 return $this->redirect(['site/index']);
             }
         }

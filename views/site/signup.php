@@ -36,10 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?= $form->field($model, 'password_repeat')->passwordInput()->label("Повтор пароля") ?>
 
-            <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-            ])->label("Код подтверждения") ?>
-
             <div class="form-group">
                 <div class="col-lg-offset-1 col-lg-11">
                     <?= Html::submitButton('Зарегистрироваться',
