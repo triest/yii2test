@@ -48,9 +48,18 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                    '<module:cabinet>/<action:\w+>' => '<module>/admin/<action>',
             ],
         ],
 
+    ],
+    'modules' => [
+        'test' => [
+            'class' => 'app\modules\test\module',
+        ],
+        'admin' => [
+            'class' => 'app\modules\admin\module',
+        ],
     ],
     'params' => $params,
 ];
