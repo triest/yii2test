@@ -78,7 +78,8 @@ class GirlsController extends Controller
                     $file = $model->uploadFile($file);
                     $model->file = $file;
                 }
-                $model->save();
+                $model->save(false);
+                return $this->actionIndex();
             }
         }
 
