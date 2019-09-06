@@ -24,7 +24,7 @@ class Girls extends \yii\db\ActiveRecord
     /**
      * @var UploadedFile file
      */
-    public $file;
+    public $image;
 
     /**
      * {@inheritdoc}
@@ -68,11 +68,11 @@ class Girls extends \yii\db\ActiveRecord
 
     public function uploadFile(UploadedFile $file)
     {
-
+        $this->image = $file;
         $filename = strtolower(md5(uniqid($file->baseName)) . '.' . $file->extension);
-        $file->saveAs(Yii::getAlias('@webroot').'/uploads/'.$filename);
-        $this->file = "saasasa";
-        $this->save(false);
+        $file->saveAs(Yii::getAlias('@webroot') . '/uploads/' . $filename);
+        $this->file = $filename;
+        $this->save();
         return $filename;
     }
 }

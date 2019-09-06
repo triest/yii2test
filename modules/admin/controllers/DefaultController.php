@@ -35,12 +35,10 @@ class DefaultController extends Controller
     }
 
     /**
-     * Displays a single Girls model.
-     * @param integer $id
+
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView()
     {
         return $this->render('view', [
                 'model' => $this->findModel($id),
