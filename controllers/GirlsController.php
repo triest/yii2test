@@ -67,18 +67,14 @@ class GirlsController extends Controller
     {
         $model = new Girls();
 
-
         if (Yii::$app->request->isPost) {
-
-
             if ($model->load(Yii::$app->request->post())) {
-
                 $file = UploadedFile::getInstance($model, 'file');
                 if ($file != null) {
                     $file = $model->uploadFile($file);
-                    $model->file = $file;
-                }
-                $model->save(false);
+                    $model->file=$file;
+                };
+                $model->save();
                 return $this->actionIndex();
             }
         }
