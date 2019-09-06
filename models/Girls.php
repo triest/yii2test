@@ -75,4 +75,13 @@ class Girls extends \yii\db\ActiveRecord
         $this->save();
         return $filename;
     }
+
+    public function getMainImage()
+    {
+        if ($this->file) {
+            return ($this->file) ? '/uploads/' . $this->file : '/no-image.png';
+        } else {
+            return null;
+        }
+    }
 }

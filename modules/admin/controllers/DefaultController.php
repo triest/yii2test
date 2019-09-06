@@ -35,7 +35,6 @@ class DefaultController extends Controller
     }
 
     /**
-
      * @return mixed
      */
     public function actionView()

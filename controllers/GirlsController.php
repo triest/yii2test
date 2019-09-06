@@ -36,13 +36,16 @@ class GirlsController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new GirlsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-        ]);
+        $ankets = Girls::find()->all();
+        return $this->render('index', ['ankets' => $ankets]);
+        /*   $searchModel = new GirlsSearch();
+           $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+           return $this->render('index', [
+                   'searchModel' => $searchModel,
+                   'dataProvider' => $dataProvider,
+           ]);*/
     }
 
     /**
@@ -53,8 +56,9 @@ class GirlsController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-                'model' => $this->findModel($id),
+        $anket = Girls::find()->where(['id' => $id])->one();
+        return $this->render('single', [
+                'anket' => $anket
         ]);
     }
 
@@ -72,7 +76,7 @@ class GirlsController extends Controller
                 $file = UploadedFile::getInstance($model, 'file');
                 if ($file != null) {
                     $file = $model->uploadFile($file);
-                    $model->file=$file;
+                    $model->file = $file;
                 };
                 $model->save();
                 return $this->actionIndex();
