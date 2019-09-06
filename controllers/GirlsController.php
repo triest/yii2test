@@ -72,7 +72,11 @@ class GirlsController extends Controller
         $model = new Girls();
 
         if (Yii::$app->request->isPost) {
-            if ($model->load(Yii::$app->request->post())) {
+
+            $post = Yii::$app->request->post();
+
+            if ($model->load($post)) {
+                die("s");
                 $file = UploadedFile::getInstance($model, 'file');
                 if ($file != null) {
                     $file = $model->uploadFile($file);
@@ -80,6 +84,15 @@ class GirlsController extends Controller
                 };
                 $model->save();
                 return $this->actionIndex();
+            } else {
+                $model->name = $post["name"];
+                $model->description = $post["description"];
+                $model->age = intval($post["age"]);
+                $model->height = intval($post["height"]);
+                $model->sex = $post["sex"];
+                if ($model->save(false)) {
+                    return $this->actionIndex();
+                }
             }
         }
 
@@ -97,11 +110,15 @@ class GirlsController extends Controller
      */
     public function actionUpdate($id)
     {
+
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->request->isPost) {
+            die("d");
         }
+        /*  if ($model->load(Yii::$app->request->post()) && $model->save()) {
+              return $this->redirect(['view', 'id' => $model->id]);
+          }*/
 
         return $this->render('update', [
                 'model' => $model,
