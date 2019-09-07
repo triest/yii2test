@@ -35,13 +35,12 @@ class DefaultController extends Controller
     }
 
     /**
+     * Displays a single Girls model.
+     * @param integer $id
      * @return mixed
      */
-    public function actionView()
+    public function actionView($id)
     {
-        return $this->render('view', [
-                'model' => $this->findModel($id),
-        ]);
+        die("d");
     }
-
 }
