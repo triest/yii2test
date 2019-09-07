@@ -63,6 +63,9 @@ $config = [
                 'master' => [
                         'class' => 'app\modules\master\Module',
                 ],
+                'rest' => [
+                        'class' => 'app\modules\rest\Module',
+                ],
         ],
         'params' => $params,
 ];
